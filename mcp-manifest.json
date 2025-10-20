@@ -1,0 +1,96 @@
+{
+  "name": "ChainMind Blockchain MCP Server",
+  "version": "1.0.0",
+  "description": "Real-time MCP server for multi-chain blockchain operations",
+  "protocol": "mcp",
+  "capabilities": {
+    "tools": true,
+    "realtime": true
+  },
+  "tools": [
+    {
+      "name": "get_eth_balance",
+      "description": "Fetch Ethereum balance for any address using ethers.js",
+      "inputs": {
+        "address": "Ethereum address (0x...)"
+      },
+      "outputs": {
+        "address": "The queried address",
+        "balance": "Balance in ETH",
+        "balanceWei": "Balance in Wei",
+        "chain": "ethereum"
+      }
+    },
+    {
+      "name": "send_eth_transaction",
+      "description": "Send ETH with optional conditional execution based on minimum balance",
+      "inputs": {
+        "privateKey": "Sender's private key (hex)",
+        "recipient": "Recipient address",
+        "amount": "Amount in ETH",
+        "minBalance": "Optional minimum balance threshold"
+      },
+      "outputs": {
+        "success": "Boolean indicating success",
+        "txHash": "Transaction hash",
+        "sender": "Sender address",
+        "recipient": "Recipient address",
+        "amount": "Amount sent"
+      }
+    },
+    {
+      "name": "get_sol_balance",
+      "description": "Fetch Solana balance for any address using @solana/web3.js",
+      "inputs": {
+        "address": "Solana public key"
+      },
+      "outputs": {
+        "address": "The queried address",
+        "balance": "Balance in SOL",
+        "balanceLamports": "Balance in Lamports",
+        "chain": "solana"
+      }
+    },
+    {
+      "name": "send_sol_transaction",
+      "description": "Send SOL with optional conditional execution based on minimum balance",
+      "inputs": {
+        "privateKey": "Sender's private key (JSON array format)",
+        "recipient": "Recipient address",
+        "amount": "Amount in SOL",
+        "minBalance": "Optional minimum balance threshold"
+      },
+      "outputs": {
+        "success": "Boolean indicating success",
+        "signature": "Transaction signature",
+        "sender": "Sender address",
+        "recipient": "Recipient address",
+        "amount": "Amount sent"
+      }
+    },
+    {
+      "name": "multi_chain_summary",
+      "description": "Get aggregated balances across Ethereum and Solana for multiple addresses",
+      "inputs": {
+        "addresses": "Array of blockchain addresses (can be mixed ETH and SOL)"
+      },
+      "outputs": {
+        "ethereum": "Object with ETH addresses and their balances",
+        "solana": "Object with SOL addresses and their balances"
+      }
+    }
+  ],
+  "features": [
+    "Real-time blockchain operations via MCP protocol",
+    "Multi-chain support (Ethereum + Solana)",
+    "Conditional transaction execution",
+    "Optional Supabase transaction logging",
+    "Live balance queries using real RPC endpoints",
+    "Not mocked - uses real ethers.js and @solana/web3.js"
+  ],
+  "security": {
+    "privateKeys": "Handled in-memory only, never stored",
+    "rpcEndpoints": "Configurable via environment variables",
+    "supabase": "Optional logging, gracefully degrades if not configured"
+  }
+}

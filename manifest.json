@@ -1,0 +1,146 @@
+{
+  "name": "ChainMind Blockchain MCP Server",
+  "version": "1.0.0",
+  "description": "Multi-chain blockchain operations with AI-friendly programmable APIs",
+  "tools": [
+    {
+      "name": "multi_balance",
+      "description": "Fetch aggregated balances across multiple blockchain addresses (Ethereum and Solana). Returns balances for all provided addresses in a single response.",
+      "endpoint": "/api/multi_balance",
+      "method": "GET",
+      "parameters": {
+        "addresses": {
+          "type": "string",
+          "description": "Comma-separated list of blockchain addresses (ETH and/or SOL)",
+          "required": true,
+          "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb,7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+        }
+      },
+      "response": {
+        "balances": {
+          "eth": {
+            "description": "Object with Ethereum addresses as keys and balances in ETH as values"
+          },
+          "sol": {
+            "description": "Object with Solana addresses as keys and balances in SOL as values"
+          }
+        }
+      }
+    },
+    {
+      "name": "auto_send",
+      "description": "Send conditional/automated transactions on Ethereum or Solana. Only executes the transaction if specified conditions are met (e.g., minimum balance threshold).",
+      "endpoint": "/api/auto_send",
+      "method": "POST",
+      "parameters": {
+        "chain": {
+          "type": "string",
+          "description": "Blockchain to use: 'eth' or 'sol'",
+          "required": true,
+          "enum": ["eth", "sol"]
+        },
+        "senderPrivateKey": {
+          "type": "string",
+          "description": "Private key of the sender (hex for ETH, JSON array for SOL)",
+          "required": true,
+          "sensitive": true
+        },
+        "recipient": {
+          "type": "string",
+          "description": "Recipient address",
+          "required": true
+        },
+        "amount": {
+          "type": "string",
+          "description": "Amount to send (in ETH or SOL)",
+          "required": true
+        },
+        "condition": {
+          "type": "object",
+          "description": "Optional condition to check before sending",
+          "required": false,
+          "properties": {
+            "token": {
+              "type": "string",
+              "description": "Token symbol to check"
+            },
+            "minBalance": {
+              "type": "number",
+              "description": "Minimum balance required to proceed"
+            }
+          }
+        }
+      },
+      "response": {
+        "success": {
+          "type": "boolean",
+          "description": "Whether the transaction was successful"
+        },
+        "txHash": {
+          "type": "string",
+          "description": "Transaction hash (ETH) or signature (SOL)"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Transaction signature (SOL only)"
+        },
+        "sender": {
+          "type": "string",
+          "description": "Address of the sender"
+        },
+        "message": {
+          "type": "string",
+          "description": "Message if condition was not met"
+        }
+      }
+    },
+    {
+      "name": "token_summary",
+      "description": "Get comprehensive token summary for multiple addresses across Ethereum and Solana, including native balances, ERC-20/SPL tokens, and NFT counts.",
+      "endpoint": "/api/token_summary",
+      "method": "GET",
+      "parameters": {
+        "addresses": {
+          "type": "string",
+          "description": "Comma-separated list of blockchain addresses (ETH and/or SOL)",
+          "required": true,
+          "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb,7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+        }
+      },
+      "response": {
+        "eth": {
+          "description": "Object with Ethereum addresses as keys",
+          "properties": {
+            "ETH": "Native ETH balance",
+            "tokens": "Object with token symbols and balances",
+            "NFTs": "Array of NFT information (placeholder)"
+          }
+        },
+        "sol": {
+          "description": "Object with Solana addresses as keys",
+          "properties": {
+            "SOL": "Native SOL balance",
+            "tokens": "Object with token mints/symbols and balances",
+            "NFTs": "Array of NFT information (placeholder)"
+          }
+        }
+      }
+    }
+  ],
+  "features": [
+    "Multi-chain balance aggregation (ETH + SOL)",
+    "Conditional transaction execution",
+    "Automated transaction triggering based on balance thresholds",
+    "Comprehensive token and NFT summary",
+    "Optional Supabase integration for transaction logging",
+    "Serverless-ready (Vercel compatible)",
+    "TypeScript with full type safety"
+  ],
+  "security_notes": [
+    "Private keys are handled server-side only",
+    "No authentication required (implement as needed)",
+    "Validate all addresses before operations",
+    "Use environment variables for RPC endpoints",
+    "Consider rate limiting for production use"
+  ]
+}
