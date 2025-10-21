@@ -165,10 +165,10 @@ export default function Dashboard() {
             <div className="flex items-center space-x-2">
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <div className="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center shadow-sm">
-                    <span className="text-white font-bold text-lg">CM</span>
+                  <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center shadow-sm">
+                    <span className="text-white font-black text-lg tracking-tighter">A</span>
                   </div>
-                  <span className="font-bold text-2xl tracking-tight">ChainMind</span>
+                  <span className="brand-logo text-3xl tracking-tighter">ALON</span>
                 </div>
               </Link>
               <span className="text-gray-400 text-lg ml-4">/</span>
