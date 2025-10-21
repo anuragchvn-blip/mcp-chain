@@ -4,25 +4,25 @@ import Link from 'next/link';
 
 export default function Whitepaper() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="border-b border-white/10 backdrop-blur-sm bg-black/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">⛓️</span>
+      <nav className="border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">CM</span>
               </div>
-              <span className="text-white font-bold text-xl">ChainMind</span>
+              <span className="font-semibold text-xl">ChainMind</span>
             </Link>
-            <div className="flex items-center gap-6">
-              <Link href="/docs" className="text-gray-300 hover:text-white transition-colors">
+            <div className="flex items-center space-x-8">
+              <Link href="/docs" className="text-gray-600 hover:text-gray-900 text-sm transition-colors">
                 Docs
               </Link>
-              <Link href="/whitepaper" className="text-white font-semibold">
+              <Link href="/whitepaper" className="text-gray-900 font-medium text-sm">
                 Whitepaper
               </Link>
-              <Link href="/dashboard" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+              <Link href="/dashboard" className="bg-black hover:bg-gray-800 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all">
                 Dashboard
               </Link>
             </div>
@@ -30,60 +30,58 @@ export default function Whitepaper() {
         </div>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-12">
-          <div className="prose prose-invert max-w-none">
-            <div className="text-center mb-12">
-              <h1 className="text-5xl font-bold text-white mb-4">ChainMind</h1>
-              <p className="text-xl text-gray-400">Multi-Chain Blockchain Operations via Model Context Protocol</p>
-              <p className="text-sm text-gray-500 mt-4">Version 1.0 | October 2025</p>
+      <div className="max-w-4xl mx-auto px-6 py-16">
+        <div className="bg-white">
+          <div className="prose prose-lg max-w-none">
+            <div className="text-center mb-16 pb-8 border-b border-gray-200">
+              <h1 className="text-6xl font-bold text-gray-900 mb-6">ChainMind</h1>
+              <p className="text-2xl text-gray-600 font-medium">Multi-Chain Blockchain Operations via Model Context Protocol</p>
+              <p className="text-sm text-gray-500 mt-6">Version 1.0 | October 2025</p>
             </div>
 
-            <div className="space-y-8 text-gray-300">
+            <div className="space-y-12 text-gray-700 text-lg leading-relaxed">
               {/* Abstract */}
               <section>
-                <h2 className="text-3xl font-bold text-white mb-4">Abstract</h2>
-                <p>
+                <h2 className="text-4xl font-bold text-gray-900 mb-6">Abstract</h2>
+                <p className="text-gray-700">
                   ChainMind is a production-ready Model Context Protocol (MCP) server that enables AI agents to interact with Ethereum and Solana blockchains. Unlike mock implementations or API wrappers, ChainMind uses real blockchain libraries (ethers.js v6 and @solana/web3.js) to perform actual on-chain operations, providing AI agents with the capability to check balances, send transactions, and aggregate multi-chain data with conditional execution logic.
                 </p>
               </section>
 
               {/* Introduction */}
               <section>
-                <h2 className="text-3xl font-bold text-white mb-4">1. Introduction</h2>
-                
-                <h3 className="text-xl font-semibold text-white mb-2">1.1 Background</h3>
-                <p>
+                <h2 className="text-4xl font-bold text-gray-900 mb-6">1. Introduction</h2>
+
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4">1.1 Background</h3>
+                <p className="text-gray-700">
                   The Model Context Protocol (MCP), developed by Anthropic, provides a standardized way for AI assistants to interact with external tools and data sources. However, blockchain interactions present unique challenges due to the complexity of cryptographic operations, transaction signing, and RPC communication.
                 </p>
 
-                <h3 className="text-xl font-semibold text-white mb-2 mt-6">1.2 Problem Statement</h3>
-                <p>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4 mt-8">1.2 Problem Statement</h3>
+                <p className="text-gray-700">
                   Existing blockchain tools for AI agents typically fall into three categories:
                 </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
+                <ul className="list-disc list-inside space-y-2 ml-6 text-gray-700">
                   <li>Mock implementations that return fake data</li>
                   <li>API wrappers that abstract away blockchain complexity</li>
                   <li>Complex setups requiring significant configuration</li>
                 </ul>
-                <p className="mt-4">
+                <p className="mt-4 text-gray-700">
                   None of these provide a true MCP-compliant interface with real blockchain interactions suitable for production use.
                 </p>
 
-                <h3 className="text-xl font-semibold text-white mb-2 mt-6">1.3 Solution</h3>
-                <p>
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4 mt-8">1.3 Solution</h3>
+                <p className="text-gray-700">
                   ChainMind addresses these limitations by providing:
                 </p>
-                <ul className="list-disc list-inside space-y-2 ml-4">
+                <ul className="list-disc list-inside space-y-2 ml-6 text-gray-700">
                   <li>Official MCP SDK integration (@modelcontextprotocol/sdk)</li>
                   <li>Real blockchain library usage (ethers.js, @solana/web3.js)</li>
                   <li>Production-ready architecture with web dashboard</li>
                   <li>Conditional transaction execution capabilities</li>
                   <li>Multi-chain balance aggregation</li>
                 </ul>
-              </section>
-
-              {/* Architecture */}
+              </section>              {/* Architecture */}
               <section>
                 <h2 className="text-3xl font-bold text-white mb-4">2. Architecture</h2>
 

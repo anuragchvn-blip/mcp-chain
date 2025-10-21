@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { WalletConnect } from '@/components/WalletConnect';
+import Link from 'next/link';
 
 export default function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -156,44 +157,56 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      {/* Navigation */}
+      <nav className="border-b border-gray-200 bg-white">
+        <div className="max-w-7xl mx-auto px-6 py-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Link href="/">
+                <div className="flex items-center space-x-3 cursor-pointer">
+                  <div className="w-10 h-10 bg-gray-900 rounded-xl flex items-center justify-center shadow-sm">
+                    <span className="text-white font-bold text-lg">CM</span>
+                  </div>
+                  <span className="font-bold text-2xl tracking-tight">ChainMind</span>
+                </div>
+              </Link>
+              <span className="text-gray-400 text-lg ml-4">/</span>
+              <span className="text-gray-600 font-semibold text-lg">Dashboard</span>
+            </div>
+            <div className="flex items-center space-x-6">
+              <Link href="/docs" className="text-gray-600 hover:text-gray-900 text-base font-medium">Docs</Link>
+              <WalletConnect />
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
-        <header className="mb-8 text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-3">
-            ⛓️ ChainMind MCP Dashboard
-          </h1>
-          <p className="text-lg text-gray-700">
-            Real blockchain operations powered by <span className="font-mono bg-blue-200 px-2 py-1 rounded">@modelcontextprotocol/sdk</span>
-          </p>
-          <div className="mt-4 flex justify-center gap-4 text-sm">
-            <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full">✓ ethers.js v6</span>
-            <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full">✓ @solana/web3.js</span>
-            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full">✓ MCP Bridge API</span>
-          </div>
-          <div className="mt-6">
-            <WalletConnect />
-          </div>
-        </header>
+        <div className="mb-16">
+          <h1 className="text-5xl font-bold mb-4 tracking-tight">Dashboard</h1>
+          <p className="text-xl text-gray-600">Manage your blockchain operations across Ethereum and Solana</p>
+        </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Address Input & Balance Check */}
-          <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-6">
-            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <span>💰</span> Balance Checker
-              <span className="text-sm font-normal text-gray-500 ml-2">(via MCP Server)</span>
-            </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Balance Checker */}
+          <div className="lg:col-span-2 card">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-bold">Check Balance</h2>
+              <span className="text-xs font-mono bg-gray-100 px-3 py-1.5 rounded-lg text-gray-600">MCP Server</span>
+            </div>
             
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Address to Check
+                <label className="label">
+                  Wallet Address
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm"
-                  placeholder={isConnected ? `${address} (your wallet)` : 'Enter any ETH or SOL address...'}
+                  className="input-field font-mono"
+                  placeholder={isConnected ? `${address}` : 'Enter Ethereum or Solana address...'}
                   value={checkAddress}
                   onChange={(e) => setCheckAddress(e.target.value)}
                 />
@@ -205,103 +218,74 @@ export default function Dashboard() {
               </div>
 
               {/* Balance Display */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
-                  <p className="text-sm text-gray-600 mb-1">Ethereum</p>
-                  <p className="text-3xl font-bold text-blue-900">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="border-2 border-gray-200 rounded-2xl p-6 bg-white hover:shadow-lg transition-all">
+                  <p className="text-base font-semibold text-gray-600 mb-2">Ethereum</p>
+                  <p className="text-3xl font-bold text-gray-900 mb-1">
                     {ethBalance ? `${ethBalance}` : '—'}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">ETH</p>
+                  <p className="text-sm font-medium text-gray-500">ETH</p>
                 </div>
 
-                <div className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
-                  <p className="text-sm text-gray-600 mb-1">Solana</p>
-                  <p className="text-3xl font-bold text-purple-900">
+                <div className="border-2 border-gray-200 rounded-2xl p-6 bg-white hover:shadow-lg transition-all">
+                  <p className="text-base font-semibold text-gray-600 mb-2">Solana</p>
+                  <p className="text-3xl font-bold text-gray-900 mb-1">
                     {solBalance ? `${solBalance}` : '—'}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">SOL</p>
+                  <p className="text-sm font-medium text-gray-500">SOL</p>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3">
+              <div className="flex gap-4">
                 <button
                   onClick={() => fetchBalance('eth')}
                   disabled={loading || (!checkAddress && !address)}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                  className="flex-1 btn-primary disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none"
                 >
-                  {loading ? '⏳ Loading...' : '🔍 Check ETH via MCP'}
+                  {loading ? 'Loading...' : 'Check ETH'}
                 </button>
+
                 <button
                   onClick={() => fetchBalance('sol')}
                   disabled={loading || (!checkAddress && !address)}
-                  className="flex-1 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                  className="flex-1 btn-primary disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none"
                 >
-                  {loading ? '⏳ Loading...' : '🔍 Check SOL via MCP'}
+                  {loading ? 'Loading...' : 'Check SOL'}
                 </button>
-              </div>
-            </div>
-          </div>
-
-          {/* MCP Server Info */}
-          <div className="bg-white rounded-2xl shadow-xl p-6">
-            <h2 className="text-xl font-bold mb-4">🔌 MCP Server Status</h2>
-            <div className="space-y-3">
-              <div className="bg-green-100 border-2 border-green-300 rounded-lg p-3">
-                <p className="text-sm font-semibold text-green-800">✓ Server Active</p>
-                <p className="text-xs text-green-700 mt-1">Running on stdio transport</p>
-              </div>
-
-              <div className="border-2 border-gray-200 rounded-lg p-3">
-                <p className="text-xs font-semibold text-gray-600 mb-2">Available Tools:</p>
-                <ul className="text-xs text-gray-700 space-y-1">
-                  <li>• get_eth_balance</li>
-                  <li>• get_sol_balance</li>
-                  <li>• send_eth_transaction</li>
-                  <li>• send_sol_transaction</li>
-                  <li>• multi_chain_summary</li>
-                </ul>
-              </div>
-
-              <div className="text-xs text-gray-500">
-                <p className="font-semibold mb-1">How it works:</p>
-                <p>Frontend → API Bridge → MCP Server → Blockchain RPC → Real Balance</p>
               </div>
             </div>
           </div>
 
           {/* Activity Log */}
-          <div className="lg:col-span-3 bg-gray-900 rounded-2xl shadow-xl p-6">
-            <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
-              <span>📊</span> MCP Activity Log
-            </h2>
-            <div className="bg-black rounded-lg p-4 font-mono text-sm h-80 overflow-y-auto">
+          <div className="card lg:col-span-1">
+            <h2 className="text-2xl font-bold mb-6">Activity</h2>
+            <div className="space-y-3 max-h-96 overflow-y-auto">
               {logs.length === 0 ? (
-                <p className="text-gray-500">Waiting for MCP calls...</p>
+                <p className="text-base text-gray-500">No activity yet</p>
               ) : (
                 logs.map((log, i) => (
-                  <div key={i} className="mb-1 text-green-400">
+                  <div key={i} className="text-sm font-mono text-gray-700 p-3 bg-gray-50 rounded-xl border border-gray-200">
                     {log}
                   </div>
                 ))
               )}
             </div>
           </div>
+        </div>
 
-          {/* Send Transaction Form */}
-          <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-6">
-            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <span>📤</span> Send Transaction
-              <span className="text-sm font-normal text-gray-500 ml-2">(via MCP Server)</span>
-            </h2>
-            
-            <div className="space-y-4">
+        {/* Transaction Sender */}
+        <div className="card mt-8">
+          <h2 className="text-2xl font-bold mb-8">Send Transaction</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Chain</label>
+                <label className="label">Blockchain</label>
                 <select
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                  title="Select blockchain"
                   value={txChain}
                   onChange={(e) => setTxChain(e.target.value as 'eth' | 'sol')}
+                  className="input-field font-semibold"
                 >
                   <option value="eth">Ethereum</option>
                   <option value="sol">Solana</option>
@@ -309,98 +293,92 @@ export default function Dashboard() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Recipient Address</label>
+                <label className="label">Recipient Address</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm"
-                  placeholder={txChain === 'eth' ? '0x...' : 'Solana address'}
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
+                  placeholder="0x... or Solana address"
+                  className="input-field font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Amount</label>
+                <label className="label">Amount {txChain === 'eth' ? '(ETH)' : '(SOL)'}</label>
                 <input
-                  type="number"
-                  step="0.001"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  placeholder="0.1"
+                  type="text"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0.01"
+                  className="input-field text-lg font-semibold"
                 />
               </div>
+            </div>
 
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Min Balance (Optional - Conditional Execution)
-                </label>
-                <input
-                  type="number"
-                  step="0.1"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                  placeholder="Only send if balance > this amount"
-                  value={minBalance}
-                  onChange={(e) => setMinBalance(e.target.value)}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Private Key</label>
+                <label className="label">Private Key (Required)</label>
                 <input
                   type="password"
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-sm"
-                  placeholder={txChain === 'eth' ? '0x... (hex)' : '[1,2,3,...] (JSON array)'}
                   value={privateKey}
                   onChange={(e) => setPrivateKey(e.target.value)}
+                  placeholder="Your private key"
+                  className="input-field font-mono"
                 />
-                <p className="text-xs text-red-600 mt-1">
-                  ⚠️ Demo only! Never use real private keys in production web apps.
-                </p>
+                <p className="text-sm text-gray-500 mt-2">⚠️ Never share your private key</p>
+              </div>
+
+              <div>
+                <label className="label">Minimum Balance (Optional)</label>
+                <input
+                  type="text"
+                  value={minBalance}
+                  onChange={(e) => setMinBalance(e.target.value)}
+                  placeholder="e.g., 1000000000000000000"
+                  className="input-field font-mono"
+                />
+                <p className="text-sm text-gray-500 mt-2">Transaction only proceeds if sender has this balance</p>
               </div>
 
               <button
-                onClick={sendTransaction}
+                onClick={() => sendTransaction()}
                 disabled={loading || !recipient || !amount || !privateKey}
-                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                className="w-full btn-primary disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none"
               >
-                {loading ? '⏳ Sending...' : '📤 Send via MCP Server'}
+                {loading ? 'Sending...' : 'Send Transaction'}
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Multi-Chain Summary */}
-          <div className="bg-white rounded-2xl shadow-xl p-6">
-            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-              <span>🌐</span> Multi-Chain Summary
-            </h2>
-            
-            <div className="space-y-4">
+        {/* Multi-Chain Summary */}
+        <div className="card mt-8">
+          <h2 className="text-2xl font-bold mb-8">Multi-Chain Summary</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Addresses (comma-separated)
-                </label>
+                <label className="label">Addresses (comma-separated)</label>
                 <textarea
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-xs"
-                  placeholder="0x..., solana_address, 0x..."
-                  rows={4}
                   value={summaryAddresses}
                   onChange={(e) => setSummaryAddresses(e.target.value)}
+                  placeholder="0xabc..., 0xdef..., DYw8j... (mix of ETH and SOL addresses)"
+                  className="input-field font-mono h-32 resize-none"
                 />
               </div>
-
               <button
-                onClick={getMultiChainSummary}
-                disabled={loading || !summaryAddresses.trim()}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                onClick={() => getMultiChainSummary()}
+                disabled={loading || !summaryAddresses}
+                className="w-full btn-primary disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none"
               >
-                {loading ? '⏳ Fetching...' : '🔄 Get Summary via MCP'}
+                {loading ? 'Fetching...' : 'Get Summary'}
               </button>
+            </div>
 
+            <div>
               {summaryResult && (
-                <div className="mt-4 bg-gray-50 rounded-lg p-4 max-h-96 overflow-y-auto">
-                  <p className="text-sm font-semibold mb-2">Results:</p>
-                  <pre className="text-xs font-mono overflow-x-auto">
+                <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-6 h-full">
+                  <h3 className="font-bold text-lg mb-4">Results</h3>
+                  <pre className="text-sm font-mono overflow-x-auto text-gray-700 leading-relaxed">
                     {JSON.stringify(summaryResult, null, 2)}
                   </pre>
                 </div>
@@ -408,16 +386,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-        <footer className="mt-8 text-center text-sm text-gray-600">
-          <p className="font-semibold">Powered by Official MCP SDK</p>
-          <p className="mt-1">
-            This dashboard calls the real MCP server which uses{' '}
-            <code className="bg-gray-200 px-2 py-0.5 rounded">ethers.js</code> and{' '}
-            <code className="bg-gray-200 px-2 py-0.5 rounded">@solana/web3.js</code>
-          </p>
-        </footer>
       </div>
     </div>
   );

@@ -524,29 +524,49 @@ The MCP server uses JSON-RPC 2.0 over stdio.
 
 export default function Docs() {
   const [activeSection, setActiveSection] = useState('getting-started');
-
   const currentSection = sections.find(s => s.id === activeSection);
 
+  // Enhanced markdown to HTML converter
+  const renderMarkdown = (content: string) => {
+    return content
+      // Code blocks first (before other replacements)
+      .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto my-6 text-sm font-mono leading-relaxed"><code>$2</code></pre>')
+      // Headers
+      .replace(/^# (.+)$/gm, '<h1 class="text-4xl font-bold text-gray-900 mb-6 mt-2">$1</h1>')
+      .replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold text-gray-900 mb-4 mt-10 border-b border-gray-200 pb-3">$1</h2>')
+      .replace(/^### (.+)$/gm, '<h3 class="text-xl font-semibold text-gray-900 mb-3 mt-8">$1</h3>')
+      // Bold labels (like **Parameters:**)
+      .replace(/\*\*(.+?):\*\*/g, '<p class="font-semibold text-gray-900 mt-6 mb-2">$1:</p>')
+      // Regular bold
+      .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>')
+      // Inline code
+      .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-2 py-0.5 rounded text-sm font-mono text-gray-800">$1</code>')
+      // List items
+      .replace(/^- (.+)$/gm, '<li class="ml-6 mb-2 text-gray-700 list-disc">$1</li>')
+      // Paragraphs
+      .replace(/\n\n/g, '<br/><br/>');
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="border-b border-white/10 backdrop-blur-sm bg-black/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">⛓️</span>
+      <nav className="border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+                <span className="text-white font-black text-sm tracking-tighter">A</span>
               </div>
-              <span className="text-white font-bold text-xl">ChainMind</span>
+              <span className="brand-logo text-2xl tracking-tighter">ALON</span>
             </Link>
-            <div className="flex items-center gap-6">
-              <Link href="/docs" className="text-white font-semibold">
+            <div className="flex items-center space-x-8">
+              <Link href="/docs" className="text-gray-900 font-medium text-sm">
                 Docs
               </Link>
-              <Link href="/whitepaper" className="text-gray-300 hover:text-white transition-colors">
+              <Link href="/whitepaper" className="text-gray-600 hover:text-gray-900 text-sm transition-colors">
                 Whitepaper
               </Link>
-              <Link href="/dashboard" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
+              <Link href="/dashboard" className="bg-black hover:bg-gray-800 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all">
                 Dashboard
               </Link>
             </div>
@@ -554,20 +574,24 @@ export default function Docs() {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="mb-12">
+          <h1 className="text-4xl font-bold mb-2">Documentation</h1>
+          <p className="text-gray-600">Complete guide to using <span className="brand-logo text-lg">ALON</span> MCP Server</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar */}
-          <div className="col-span-1">
-            <div className="sticky top-4 space-y-1">
-              <h2 className="text-white font-bold mb-4">Documentation</h2>
+          <div className="lg:col-span-1">
+            <div className="lg:sticky lg:top-4 space-y-1">
               {sections.map((section) => (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
-                  className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                  className={`block w-full text-left px-4 py-2.5 rounded-lg transition-all text-sm font-medium ${
                     activeSection === section.id
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                      ? 'bg-black text-white'
+                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                   }`}
                 >
                   {section.title}
@@ -577,10 +601,15 @@ export default function Docs() {
           </div>
 
           {/* Content */}
-          <div className="col-span-3">
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
-              <div className="prose prose-invert max-w-none">
-                <div className="whitespace-pre-wrap text-gray-300" dangerouslySetInnerHTML={{ __html: currentSection?.content.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre class="bg-gray-900 p-4 rounded-lg overflow-x-auto"><code class="text-green-400">$2</code></pre>').replace(/`([^`]+)`/g, '<code class="bg-white/10 px-2 py-0.5 rounded text-blue-400">$1</code>').replace(/^# (.+)$/gm, '<h1 class="text-4xl font-bold text-white mb-4">$1</h1>').replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold text-white mb-3 mt-8">$1</h2>').replace(/^### (.+)$/gm, '<h3 class="text-xl font-bold text-white mb-2 mt-6">$1</h3>').replace(/^\*\*(.+):\*\*$/gm, '<p class="font-semibold text-white">$1:</p>') || '' }} />
+          <div className="lg:col-span-3">
+            <div className="bg-white border border-gray-200 rounded-xl p-8 lg:p-10">
+              <div className="prose prose-lg max-w-none">
+                <div 
+                  className="text-gray-700 leading-relaxed"
+                  dangerouslySetInnerHTML={{ 
+                    __html: renderMarkdown(currentSection?.content || '')
+                  }} 
+                />
               </div>
             </div>
           </div>
