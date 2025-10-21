@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "ETH_RPC_URL": "@eth_rpc_url",
+    "SOL_RPC_URL": "@sol_rpc_url"
+  }
+}

@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { spawn } from 'child_process';
-import path from 'path';
 
 /**
  * MCP Bridge API
- * This API route bridges the browser frontend to the MCP server (which uses stdio transport)
- * It spawns the MCP server as a child process and communicates via JSON-RPC over stdio
+ * Directly implements MCP tools without spawning a separate process
+ * This works better in serverless environments like Vercel
  */
 
 export async function POST(request: NextRequest) {
@@ -19,12 +17,40 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Path to compiled MCP server
-    const mcpServerPath = path.join(process.cwd(), 'dist', 'index.js');
+    // Route to appropriate API endpoint
+    let apiEndpoint = '';
+    switch (tool) {
+      case 'get_eth_balance':
+        apiEndpoint = '/api/get-eth-balance';
+        break;
+      case 'get_sol_balance':
+        apiEndpoint = '/api/get-sol-balance';
+        break;
+      case 'send_eth_transaction':
+        apiEndpoint = '/api/send-eth-transaction';
+        break;
+      case 'send_sol_transaction':
+        apiEndpoint = '/api/send-sol-transaction';
+        break;
+      case 'multi_chain_summary':
+        // Handle multi-chain summary by calling multiple endpoints
+        return await handleMultiChainSummary(args);
+      default:
+        return NextResponse.json(
+          { error: `Unknown tool: ${tool}` },
+          { status: 400 }
+        );
+    }
 
-    // Call MCP server and get response
-    const result = await callMCPServer(mcpServerPath, tool, args);
+    // Call the appropriate API endpoint
+    const baseUrl = request.nextUrl.origin;
+    const response = await fetch(`${baseUrl}${apiEndpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(args),
+    });
 
+    const result = await response.json();
     return NextResponse.json({ result });
   } catch (error) {
     console.error('MCP Bridge Error:', error);
@@ -36,109 +62,60 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * Spawns the MCP server and sends a tool call request via JSON-RPC
+ * Handle multi-chain summary by calling both ETH and SOL balance endpoints
  */
-async function callMCPServer(
-  serverPath: string,
-  toolName: string,
-  toolArgs: any
-): Promise<any> {
-  return new Promise((resolve, reject) => {
-    // Spawn the MCP server process
-    const mcpProcess = spawn('node', [serverPath], {
-      stdio: ['pipe', 'pipe', 'pipe'],
-    });
+async function handleMultiChainSummary(args: { addresses: string[] }): Promise<NextResponse> {
+  try {
+    const { addresses } = args;
+    
+    if (!addresses || !Array.isArray(addresses)) {
+      return NextResponse.json(
+        { error: 'Invalid addresses array' },
+        { status: 400 }
+      );
+    }
 
-    let stdout = '';
-    let stderr = '';
-
-    mcpProcess.stdout.on('data', (data) => {
-      stdout += data.toString();
-    });
-
-    mcpProcess.stderr.on('data', (data) => {
-      stderr += data.toString();
-    });
-
-    mcpProcess.on('close', (code) => {
-      if (code !== 0) {
-        reject(new Error(`MCP server exited with code ${code}: ${stderr}`));
-        return;
-      }
-
-      // Parse the JSON-RPC response from stdout
-      try {
-        // The MCP server returns JSON-RPC messages
-        // We need to parse the response that contains the tool result
-        const lines = stdout.split('\n').filter(line => line.trim());
-        
-        // Look for the tool response (it will be a JSON-RPC result)
-        for (const line of lines) {
-          try {
-            const message = JSON.parse(line);
-            if (message.result && message.result.content) {
-              // Extract the actual result from the content
-              const content = message.result.content[0];
-              if (content.type === 'text') {
-                const result = JSON.parse(content.text);
-                resolve(result);
-                return;
-              }
-            }
-          } catch (e) {
-            // Skip non-JSON lines
-            continue;
-          }
-        }
-
-        reject(new Error('No valid response from MCP server'));
-      } catch (error) {
-        reject(new Error(`Failed to parse MCP response: ${error}`));
-      }
-    });
-
-    mcpProcess.on('error', (error) => {
-      reject(new Error(`Failed to start MCP server: ${error}`));
-    });
-
-    // Send the JSON-RPC request to the MCP server
-    // First, send initialize request
-    const initRequest = {
-      jsonrpc: '2.0',
-      id: 1,
-      method: 'initialize',
-      params: {
-        protocolVersion: '2024-11-05',
-        capabilities: {},
-        clientInfo: {
-          name: 'mcp-bridge',
-          version: '1.0.0',
-        },
-      },
+    const result = {
+      ethereum: {} as Record<string, any>,
+      solana: {} as Record<string, any>,
     };
 
-    mcpProcess.stdin.write(JSON.stringify(initRequest) + '\n');
+    // Detect address types and fetch balances
+    for (const address of addresses) {
+      if (address.startsWith('0x')) {
+        // Ethereum address
+        try {
+          const ethResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/get-eth-balance`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ address }),
+          });
+          const ethData = await ethResponse.json();
+          result.ethereum[address] = ethData;
+        } catch (error) {
+          result.ethereum[address] = { error: String(error) };
+        }
+      } else {
+        // Assume Solana address
+        try {
+          const solResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/get-sol-balance`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ address }),
+          });
+          const solData = await solResponse.json();
+          result.solana[address] = solData;
+        } catch (error) {
+          result.solana[address] = { error: String(error) };
+        }
+      }
+    }
 
-    // Wait a bit then send the tool call
-    setTimeout(() => {
-      const toolRequest = {
-        jsonrpc: '2.0',
-        id: 2,
-        method: 'tools/call',
-        params: {
-          name: toolName,
-          arguments: toolArgs,
-        },
-      };
-
-      mcpProcess.stdin.write(JSON.stringify(toolRequest) + '\n');
-      mcpProcess.stdin.end();
-    }, 100);
-
-    // Timeout after 30 seconds
-    setTimeout(() => {
-      mcpProcess.kill();
-      reject(new Error('MCP server timeout'));
-    }, 30000);
-  });
+    return NextResponse.json({ result });
+  } catch (error) {
+    return NextResponse.json(
+      { error: String(error) },
+      { status: 500 }
+    );
+  }
 }
