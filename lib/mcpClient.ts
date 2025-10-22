@@ -14,7 +14,7 @@ export async function initMCPClient() {
 
   mcpClient = new Client(
     {
-      name: 'chainmind-web-client',
+      name: 'alon-web-client',
       version: '1.0.0',
     },
     {

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { WalletConnect } from '@/components/WalletConnect';
+import { VoiceInput } from '@/components/VoiceInput';
 import Link from 'next/link';
 
 export default function Dashboard() {
@@ -199,6 +200,30 @@ export default function Dashboard() {
             </div>
             
             <div className="space-y-6">
+              {/* Voice Input */}
+              <VoiceInput 
+                onTranscript={(text) => {
+                  addLog(`🎤 Voice: "${text}"`);
+                  // Extract address from voice input if it contains one
+                  const ethAddressMatch = text.match(/0x[a-fA-F0-9]{40}/);
+                  if (ethAddressMatch) {
+                    setCheckAddress(ethAddressMatch[0]);
+                    addLog(`✓ Detected address: ${ethAddressMatch[0]}`);
+                  }
+                }}
+                onCommand={(command) => {
+                  if (command === 'check_balance') {
+                    addLog('🎤 Voice command: Check balance');
+                    // Auto-detect chain based on current input
+                    if (checkAddress.startsWith('0x')) {
+                      fetchBalance('eth');
+                    } else if (checkAddress) {
+                      fetchBalance('sol');
+                    }
+                  }
+                }}
+              />
+
               <div>
                 <label className="label">
                   Wallet Address

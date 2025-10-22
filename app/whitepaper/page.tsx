@@ -13,7 +13,7 @@ export default function Whitepaper() {
               <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">CM</span>
               </div>
-              <span className="font-semibold text-xl">ChainMind</span>
+              <span className="font-semibold text-xl">ALON</span>
             </Link>
             <div className="flex items-center space-x-8">
               <Link href="/docs" className="text-gray-600 hover:text-gray-900 text-sm transition-colors">
@@ -34,7 +34,7 @@ export default function Whitepaper() {
         <div className="bg-white">
           <div className="prose prose-lg max-w-none">
             <div className="text-center mb-16 pb-8 border-b border-gray-200">
-              <h1 className="text-6xl font-bold text-gray-900 mb-6">ChainMind</h1>
+              <h1 className="text-6xl font-bold text-gray-900 mb-6">ALON</h1>
               <p className="text-2xl text-gray-600 font-medium">Multi-Chain Blockchain Operations via Model Context Protocol</p>
               <p className="text-sm text-gray-500 mt-6">Version 1.0 | October 2025</p>
             </div>
@@ -44,7 +44,7 @@ export default function Whitepaper() {
               <section>
                 <h2 className="text-4xl font-bold text-gray-900 mb-6">Abstract</h2>
                 <p className="text-gray-700">
-                  ChainMind is a production-ready Model Context Protocol (MCP) server that enables AI agents to interact with Ethereum and Solana blockchains. Unlike mock implementations or API wrappers, ChainMind uses real blockchain libraries (ethers.js v6 and @solana/web3.js) to perform actual on-chain operations, providing AI agents with the capability to check balances, send transactions, and aggregate multi-chain data with conditional execution logic.
+                  ALON is a production-ready Model Context Protocol (MCP) server that enables AI agents to interact with Ethereum and Solana blockchains. Unlike mock implementations or API wrappers, ALON uses real blockchain libraries (ethers.js v6 and @solana/web3.js) to perform actual on-chain operations, providing AI agents with the capability to check balances, send transactions, and aggregate multi-chain data with conditional execution logic.
                 </p>
               </section>
 
@@ -72,7 +72,7 @@ export default function Whitepaper() {
 
                 <h3 className="text-2xl font-semibold text-gray-900 mb-4 mt-8">1.3 Solution</h3>
                 <p className="text-gray-700">
-                  ChainMind addresses these limitations by providing:
+                  ALON addresses these limitations by providing:
                 </p>
                 <ul className="list-disc list-inside space-y-2 ml-6 text-gray-700">
                   <li>Official MCP SDK integration (@modelcontextprotocol/sdk)</li>
@@ -236,7 +236,7 @@ return {
 
                 <h3 className="text-xl font-semibold text-white mb-2">5.1 AI-Powered Portfolio Management</h3>
                 <p>
-                  AI agents can use ChainMind to monitor wallet balances across multiple chains, alerting users to significant changes or executing rebalancing strategies.
+                  AI agents can use ALON to monitor wallet balances across multiple chains, alerting users to significant changes or executing rebalancing strategies.
                 </p>
 
                 <h3 className="text-xl font-semibold text-white mb-2 mt-6">5.2 Conditional Automated Payments</h3>
@@ -286,10 +286,10 @@ return {
               <section>
                 <h2 className="text-3xl font-bold text-white mb-4">7. Conclusion</h2>
                 <p>
-                  ChainMind demonstrates that AI agents can interact with blockchains using real, production-ready tools rather than mocks or simplified APIs. By combining the Model Context Protocol with established blockchain libraries, we enable a new class of AI-powered blockchain applications.
+                  ALON demonstrates that AI agents can interact with blockchains using real, production-ready tools rather than mocks or simplified APIs. By combining the Model Context Protocol with established blockchain libraries, we enable a new class of AI-powered blockchain applications.
                 </p>
                 <p className="mt-4">
-                  The system is open-source, extensible, and ready for production deployment. Whether used through Claude Desktop or the web dashboard, ChainMind provides reliable, verifiable blockchain data to AI agents and users alike.
+                  The system is open-source, extensible, and ready for production deployment. Whether used through Claude Desktop or the web dashboard, ALON provides reliable, verifiable blockchain data to AI agents and users alike.
                 </p>
               </section>
 
@@ -331,11 +331,11 @@ npm run dev:web`}
 
               <section className="mt-12 pt-8 border-t border-white/10">
                 <p className="text-center text-gray-400">
-                  <strong>ChainMind v1.0</strong> | Built with ❤️ using official MCP SDK, ethers.js, and @solana/web3.js
+                  <strong>ALON v1.0</strong> | Built with ❤️ using official MCP SDK, ethers.js, and @solana/web3.js
                 </p>
                 <div className="text-center mt-4">
                   <Link href="/dashboard" className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all">
-                    Try ChainMind Now →
+                    Try ALON Now →
                   </Link>
                 </div>
               </section>
@@ -346,3 +346,4 @@ npm run dev:web`}
     </div>
   );
 }
+

@@ -8,9 +8,9 @@ const sections = [
     id: 'getting-started',
     title: 'Getting Started',
     content: `
-# Getting Started with ChainMind
+# Getting Started with ALON
 
-ChainMind is a production-ready Model Context Protocol (MCP) server that enables AI agents to interact with Ethereum and Solana blockchains.
+ALON is a production-ready Model Context Protocol (MCP) server that enables AI agents to interact with Ethereum and Solana blockchains.
 
 ## Quick Start
 
@@ -51,7 +51,7 @@ SUPABASE_SERVICE_KEY=your_service_key (optional)
     content: `
 # Architecture Overview
 
-ChainMind uses a bridge architecture to connect browser-based frontends to the MCP server.
+ALON uses a bridge architecture to connect browser-based frontends to the MCP server.
 
 ## Components
 
@@ -91,7 +91,7 @@ Browser → /api/mcp-bridge → MCP Server (stdio) → ethers.js/Solana → Bloc
     content: `
 # MCP Tools Reference
 
-ChainMind provides 5 MCP tools for blockchain operations.
+ALON provides 5 MCP tools for blockchain operations.
 
 ## get_eth_balance
 
@@ -221,7 +221,7 @@ Get balances across multiple addresses on both chains.
     content: `
 # Using with Claude Desktop
 
-ChainMind works seamlessly with Claude Desktop using the Model Context Protocol.
+ALON works seamlessly with Claude Desktop using the Model Context Protocol.
 
 ## Setup
 
@@ -245,7 +245,7 @@ This creates \`dist/index.js\` - your MCP server.
 \`\`\`json
 {
   "mcpServers": {
-    "chainmind": {
+    "ALON": {
       "command": "node",
       "args": ["/absolute/path/to/mcp-chain/dist/index.js"],
       "env": {
@@ -288,7 +288,7 @@ Claude will use \`send_eth_transaction\` with the \`minBalance\` parameter.
     content: `
 # Web Dashboard Usage
 
-The ChainMind web dashboard provides a beautiful UI for interacting with all MCP tools.
+The ALON web dashboard provides a beautiful UI for interacting with all MCP tools.
 
 ## Accessing the Dashboard
 
@@ -357,7 +357,7 @@ The exact Wei/Lamport amounts prove it's using real blockchain data!
     content: `
 # Deployment Guide
 
-Deploy ChainMind to production.
+Deploy ALON to production.
 
 ## Vercel (Recommended)
 
@@ -416,8 +416,8 @@ CMD ["node", "dist/index.js"]
 \`\`\`
 
 \`\`\`bash
-docker build -t chainmind-mcp .
-docker run -e ETH_RPC_URL=... -e SOL_RPC_URL=... chainmind-mcp
+docker build -t ALON-mcp .
+docker run -e ETH_RPC_URL=... -e SOL_RPC_URL=... ALON-mcp
 \`\`\`
 
 ## Production Checklist
@@ -618,3 +618,4 @@ export default function Docs() {
     </div>
   );
 }
+

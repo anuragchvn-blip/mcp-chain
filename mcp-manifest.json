@@ -1,5 +1,5 @@
 {
-  "name": "ChainMind Blockchain MCP Server",
+  "name": "ALON Blockchain MCP Server",
   "version": "1.0.0",
   "description": "Real-time MCP server for multi-chain blockchain operations",
   "protocol": "mcp",

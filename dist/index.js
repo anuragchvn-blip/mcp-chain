@@ -349,7 +349,7 @@ server.setRequestHandler(types_js_1.CallToolRequestSchema, async (request) => {
 async function main() {
     const transport = new stdio_js_1.StdioServerTransport();
     await server.connect(transport);
-    console.error('ChainMind MCP Server running on stdio');
+    console.error('ALON MCP Server running on stdio');
 }
 main().catch((error) => {
     console.error('Fatal error:', error);

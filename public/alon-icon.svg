@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Background -->
+  <rect width="256" height="256" rx="48" fill="#000000"/>
+  
+  <!-- Letter A with geometric design -->
+  <g transform="translate(128, 128)">
+    <!-- Main A shape -->
+    <path d="M 0,-80 L 50,80 L 20,80 L 10,50 L -10,50 L -20,80 L -50,80 Z M 0,-30 L 15,20 L -15,20 Z" 
+          fill="#FFFFFF" 
+          stroke="none"/>
+    
+    <!-- Accent line (representing blockchain connection) -->
+    <path d="M -40,-60 L 40,-60" 
+          stroke="#FFFFFF" 
+          stroke-width="4" 
+          stroke-linecap="round"
+          opacity="0.5"/>
+    
+    <!-- Dots representing nodes/blocks -->
+    <circle cx="-40" cy="-60" r="5" fill="#FFFFFF" opacity="0.8"/>
+    <circle cx="0" cy="-60" r="5" fill="#FFFFFF" opacity="0.8"/>
+    <circle cx="40" cy="-60" r="5" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+  
+  <!-- Subtle gradient overlay for depth -->
+  <defs>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.05" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.1" />
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="48" fill="url(#shine)"/>
+</svg>
